@@ -94,7 +94,6 @@ Install the necessary dependencies by running npm install.
 Set up a MongoDB database and add the connection string to a .env file in the root directory of the project.
 Start the server by running npm start.
 <h2 id="contributing">Contributing</h2>
-We welcome contributions to this project! If you have an idea for a new feature or have found a bug, please open an issue in the GitHub repository.
-
+No Contibutr is Required!!
 <h2 id="license">License</h2>
 This project is licensed under the MIT License. See the LICENSE file for more details.
