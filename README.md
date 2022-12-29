@@ -1,50 +1,24 @@
-Food Recommendation Web API
-A web API for food recommendation, developed using Node.js, Express, and MongoDB.
-
-Table of Contents
-Features
-Technologies
-Prerequisites
-Installation
-Usage
-API Reference
-Tests
-Deployment
-Contributing
-License
-Features
-Recommend different types of food to the users
-Automatically recommend new food daily (breakfast, lunch, dinner)
-Food information includes name, image, calorie, and recipe
-Allow users to add their own food list (breakfast, lunch, dinner) for each day of the week
-Technologies
-Node.js
-Express
-MongoDB
-Prerequisites
-Node.js
-MongoDB
-Installation
-Clone the repository:
-Copy code
-git clone https://github.com/<USERNAME>/food-recommendation-web-api.git
-Install the dependencies:
-Copy code
-cd food-recommendation-web-api
-npm install
-Set the environment variables in a .env file:
-Copy code
-MONGODB_URI=<mongodb_connection_string>
-Start the server:
-Copy code
-npm start
-Usage
-Make a GET request to http://localhost:3000/food/recommendation to get the recommended food.
-
-Make a POST request to http://localhost:3000/food/recommendation with the following JSON body to add a new recommendation:
-
-Copy code
-{
-  "name": "Pizza",
-  "image": "https://pizza.com/pizza.jpg",
-  "calorie":"222"}
+<h1>Food Recommendation Web API</h1>
+<p>A web API for food recommendation, developed using Node.js, Express, and MongoDB.</p>
+<h2>Table of Contents</h2>
+<ul>
+  <li><a href="#features">Features</a></li>
+  <li><a href="#technologies">Technologies</a></li>
+  <li><a href="#prerequisites">Prerequisites</a></li>
+  <li><a href="#installation">Installation</a></li>
+  <li><a href="#usage">Usage</a></li>
+  <li><a href="#api-reference">API Reference</a></li>
+  <li><a href="#tests">Tests</a></li>
+  <li><a href="#deployment">Deployment</a></li>
+  <li><a href="#contributing">Contributing</a></li>
+  <li><a href="#license">License</a></li>
+</ul>
+<h2 id="features">Features</h2>
+<ul>
+  <li>Recommend different types of food to the users</li>
+  <li>Automatically recommend new food daily (breakfast, lunch, dinner)</li>
+  <li>Food information includes name, image, calorie, and recipe</li>
+  <li>Allow users to add their own food list (breakfast, lunch, dinner) for each day of the week</li>
+</ul>
+<h2 id="technologies">Technologies</h2>
+<ul>
