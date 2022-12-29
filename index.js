@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const recommendationRoutes = require('./routes/recommendation');
 
@@ -18,8 +20,9 @@ app.use('/food/recommendation', recommendationRoutes);
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true
-});
+}).then(() => {
+    console.log('Connected to MongoDB')
+}).catch((err) => console.log(err))
 
 const connection = mongoose.connection;
 
@@ -28,7 +31,7 @@ connection.once('open', () => {
 });
 
 // START SERVER
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
