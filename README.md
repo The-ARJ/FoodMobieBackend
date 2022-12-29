@@ -68,3 +68,29 @@ npm start
   "recipe": "https://pizza.com/recipe"
 }
 </pre>
+
+    <li>Make a GET request to <code>http://localhost:3000/food/recommendation/:id</code> to get a recommendation by ID.</li>
+  <li>Make a PUT request to <code>http://localhost:3000/food/recommendation/:id</code> with the following JSON body to update a recommendation by ID:
+<pre>
+{
+  "name": "Pizza",
+  "image": "https://pizza.com/pizza.jpg",
+  "calorie": 300,
+  "recipe": "https://pizza.com/recipe"
+}
+</pre>
+  </li>
+  <li>Make a DELETE request to <code>http://localhost:3000/food/recommendation/:id</code> to delete a recommendation by ID.</li>
+</ol>
+<h2 id="api-reference">API Reference</h2>
+<h3>Recommendations</h3>
+<h4>Get all recommendations</h4>
+<ul>
+  <li><strong>URL</strong>: <code>/food/recommendation</code></li>
+  <li><strong>Method</strong>: <code>GET</code></li>
+  <li><strong>Auth required</strong>: <code>No</code></li>
+  <li><strong>Permissions required</strong>: <code>None</code></li>
+  <li><strong>Success Response</strong>:
+<ul>
+  <li><strong>Code</strong>: 200</li>
+  <li><strong>Content</strong>:
