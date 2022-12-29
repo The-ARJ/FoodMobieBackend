@@ -83,14 +83,18 @@ npm start
   <li>Make a DELETE request to <code>http://localhost:3000/food/recommendation/:id</code> to delete a recommendation by ID.</li>
 </ol>
 <h2 id="api-reference">API Reference</h2>
-<h3>Recommendations</h3>
-<h4>Get all recommendations</h4>
-<ul>
-  <li><strong>URL</strong>: <code>/food/recommendation</code></li>
-  <li><strong>Method</strong>: <code>GET</code></li>
-  <li><strong>Auth required</strong>: <code>No</code></li>
-  <li><strong>Permissions required</strong>: <code>None</code></li>
-  <li><strong>Success Response</strong>:
-<ul>
-  <li><strong>Code</strong>: 200</li>
-  <li><strong>Content</strong>:
+
+
+ <h2 id="deployment">Deployment</h2>
+To deploy this API, follow these steps:
+
+Make sure you have Node.js and npm installed on your machine.
+Clone this repository and navigate to the project directory.
+Install the necessary dependencies by running npm install.
+Set up a MongoDB database and add the connection string to a .env file in the root directory of the project.
+Start the server by running npm start.
+<h2 id="contributing">Contributing</h2>
+We welcome contributions to this project! If you have an idea for a new feature or have found a bug, please open an issue in the GitHub repository.
+
+<h2 id="license">License</h2>
+This project is licensed under the MIT License. See the LICENSE file for more details.
