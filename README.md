@@ -22,3 +22,49 @@
 </ul>
 <h2 id="technologies">Technologies</h2>
 <ul>
+<p>
+  <li>Node.js</li>
+  <li>Express</li>
+  <li>MongoDB</li>
+</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>
+  <li>Node.js</li>
+  <li>MongoDB</li>
+</p>
+<h2 id="installation">Installation</h2>
+<ol>
+  <li>Clone the repository:
+<pre>
+git clone https://github.com/<USERNAME>/food-recommendation-web-api.git
+</pre>
+  </li>
+  <li>Install the dependencies:
+<pre>
+cd food-recommendation-web-api
+npm install
+</pre>
+  </li>
+  <li>Set the environment variables in a <code>.env</code> file:
+<pre>
+MONGODB_URI=<mongodb_connection_string>
+</pre>
+  </li>
+  <li>Start the server:
+<pre>
+npm start
+</pre>
+  </li>
+</ol>
+<h2 id="usage">Usage</h2>
+<ol>
+  <li>Make a GET request to <code>http://localhost:3000/food/recommendation</code> to get the recommended food.</li>
+  <li>Make a POST request to <code>http://localhost:3000/food/recommendation</code> with the following JSON body to add a new recommendation:
+<pre>
+{
+  "name": "Pizza",
+  "image": "https://pizza.com/pizza.jpg",
+  "calorie": 300,
+  "recipe": "https://pizza.com/recipe"
+}
+</pre>
