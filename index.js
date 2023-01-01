@@ -1,38 +1,50 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const dotenv = require('dotenv');
-dotenv.config();
+require('dotenv').config()
+const express = require('express')
+const path = require('path')
+const mongoose = require('mongoose')
+const logger = require('./logger')
+const foodsRouter = require('./routes/foods-routes')
+const categoryRouter = require('./routes/category-routes')
+const userRouter = require('./routes/users-routes')
+const auth = require('./middleware/auth')
 
-const recommendationRoutes = require('./routes/recommendation');
+const port = process.env.PORT || 3000
 
-const app = express();
-
-// MIDDLEWARES
-app.use(cors());
-app.use(bodyParser.json());
-
-// ROUTES
-app.use('/food/recommendation', recommendationRoutes);
-
-// CONNECT TO DATABASE
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
+mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log('Connected to MongoDB')
 }).catch((err) => console.log(err))
 
-const connection = mongoose.connection;
+const app = express()
 
-connection.once('open', () => {
-  console.log('MongoDB database connection established successfully');
-});
+app.use((req, res, next) => {
+    logger.log(`${req.method}\t${req.headers.origin}\t${req.path}`)
+    console.log(`${req.method} ${req.path}`)
+    next()
+})
+// To accept form data
+app.use(express.urlencoded({ extended: false }))
+// To accept json data
+app.use(express.json())
+// To serve static files
+app.use(express.static(path.join(__dirname, 'public')))
 
-// START SERVER
-const port = process.env.PORT || 3000;
+app.get('^/$|/index(.html)?', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'index.html'))
+})
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+app.use('/users', userRouter)
+app.use(auth.verifyUser)
+app.use('/foods', foodsRouter)
+app.use('/categories', categoryRouter)
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.log(err.stack)
+    if (res.statusCode == 200) res.status(500)
+    res.json({ msg: err.message })
+})
+
+mongoose.connection.once('open', () => {
+    app.listen(port, () => {
+        console.log(`Server is running at port ${port}`)
+    })
+})
