@@ -7,7 +7,6 @@ const foodsRouter = require('./routes/foods-routes')
 const categoryRouter = require('./routes/category-routes')
 const userRouter = require('./routes/users-routes')
 const auth = require('./middleware/auth')
-
 const port = process.env.PORT || 3000
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
