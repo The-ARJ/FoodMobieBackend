@@ -9,9 +9,12 @@ const getAllFoods = (req, res, next) => {
 };
 
 const createFood = (req, res, next) => {
+  console.log(req.bo)
   let food = {
-    title: req.body.title,
-    author: req.body.author,
+    foodname: req.body.foodname,
+    image: req.body.image,
+    calories: req.body.calories,
+    recipe: req.body.recipe,
     owner: req.user.id,
   };
   Food.create(food)
@@ -45,8 +48,10 @@ const updateFoodById = (req, res, next) => {
         res.status(403);
         return next(new Error("Not allowed"));
       }
-      food.author = req.body.author ? req.body.author : food.author;
-      food.title = req.body.title ? req.body.title : food.title;
+      food.foodname = req.body.foodname ? req.body.foodname : food.foodname;
+      food.image = req.body.image ? req.body.image : food.image;
+      food.calories = req.body.calories ? req.body.calories : food.calories;
+      food.recipe = req.body.recipe ? req.body.recipe : food.recipe;
       food.category = req.body.category ? req.body.category : food.category;
       food
         .save()

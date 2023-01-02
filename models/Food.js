@@ -16,7 +16,7 @@ ref:'User'}
 
 const foodSchema = mongoose.Schema(
   {
-    name: {
+    foodname: {
       type: String,
       required: true,
     },
