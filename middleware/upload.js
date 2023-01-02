@@ -1,5 +1,6 @@
 const multer = require('multer')
 const path = require('path')
+const { off } = require('process')
 
 
 const storage = multer.diskStorage({
@@ -12,7 +13,16 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({ storage: storage })
+const imageFileFilter = (res,file,cb)=>{
+    if(!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)){
+        return cb(new Error('File format not supported'),false)
+    }
+    cb(null,true)
+}
+
+const upload = multer({ storage: storage,
+fileFilter:imageFileFilter 
+})
 
 
 module.exports = upload
