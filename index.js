@@ -6,6 +6,7 @@ const logger = require('./logger')
 const foodsRouter = require('./routes/foods-routes')
 const categoryRouter = require('./routes/category-routes')
 const userRouter = require('./routes/users-routes')
+const profilesRouter = require('./routes/profile-routes')
 const auth = require('./middleware/auth')
 const port = process.env.PORT || 3000
 
@@ -27,14 +28,22 @@ app.use(express.json())
 // To serve static files
 app.use(express.static(path.join(__dirname, 'public')))
 
+
+//Home Page
 app.get('^/$|/index(.html)?', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'index.html'))
 })
 
+
+// Router level Middleware
 app.use('/users', userRouter)
-app.use(auth.verifyUser)
+// app.use(auth.verifyUser)
+app.use('/profiles',auth.verifyUser, profilesRouter)
 app.use('/foods', foodsRouter)
 app.use('/categories', categoryRouter)
+
+
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.log(err.stack)
