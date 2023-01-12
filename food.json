@@ -1,0 +1,63 @@
+[
+    {
+        "name": "Eggs Benedict",
+        "recipe": "1. To make hollandaise sauce, melt butter in a small saucepan over low heat. In a separate small saucepan, whisk together egg yolks and lemon juice. Place the pan over low heat and cook, whisking constantly, until the mixture thickens, about 5 minutes. Slowly pour the melted butter into the egg yolk mixture while whisking constantly. Season with salt and cayenne pepper. Keep warm until ready to use. \n2. To make poached eggs, bring a large saucepan of water to a simmer. Crack eggs into a small bowl, then gently pour them into the simmering water. Cook for 2-3 minutes, or until the whites are set and the yolks are still runny. Remove with a slotted spoon and drain on a paper towel. \n3. Toast English muffins and place a slice of ham on each half. Top with a poached egg and spoon hollandaise sauce over the top. Serve immediately.",
+        "meal": "breakfast",
+        "calories": 350
+    },
+    {
+        "name": "Avocado Toast",
+        "recipe": "1. Cut avocado in half and remove the pit. Scoop the avocado out of the skin and mash it in a bowl. \n2. Spread the mashed avocado on top of a slice of whole grain bread. \n3. Sprinkle with salt and pepper to taste. \n4. Serve immediately.",
+        "meal": "breakfast",
+        "calories": 250
+    },
+    {
+        "name": "Caprese Salad",
+        "recipe": "1. Slice tomatoes and mozzarella cheese into rounds. \n2. Arrange the tomatoes and mozzarella on a platter. \n3. Tear fresh basil leaves and sprinkle them over the top. \n4. Drizzle with olive oil and balsamic vinegar. \n5. Sprinkle with salt and pepper to taste. \n6. Serve immediately.",
+        "meal": "lunch",
+        "calories": 200
+    },
+    {
+        "name": "Grilled Chicken Sandwich",
+        "recipe": "1. Preheat a grill or grill pan to medium-high heat. \n2. Season chicken breast with salt and pepper. \n3. Grill chicken for 4-5 minutes per side, or until cooked through. \n4. Toast slices of whole grain bread. \n5. Spread mayonnaise on one side of each slice of toast. \n6. Top one slice of toast with lettuce and tomato. \n7. Slice the grilled chicken and place it on top. \n8. Cover with the second slice of toast. \n9. Serve immediately.",
+        "meal": "lunch",
+        "calories": 400
+    },
+    {
+        "name": "Steak with Roasted Vegetables",
+        "recipe": "1. Preheat oven to 400°F. \n2. Cut carrots and zucchini into bite-sized pieces. \n3. Toss with olive oil, salt, and pepper. \n4. Spread on a baking sheet. \n5. Roast for 20-25 minutes or until tender. \n6. While the vegetables are roasting, season the steak with salt and pepper. \n7. Heat a skillet over high heat. \n8. Cook steak for 2-3 minutes per side for rare, 4-5 minutes per side for medium, and 6-7 minutes per side for well done. \n9. Remove steak from the skillet and let rest for 5 minutes. \n10. Slice steak against the grain. \n11. Serve steak with roasted vegetables on the side. ",
+        "meal": "dinner",
+        "calories": 600
+        },
+        {
+        "name": "Salmon with Quinoa and Spinach",
+        "recipe": "1. Cook quinoa according to package instructions. \n2. Season salmon with salt and pepper. \n3. Heat a skillet over medium-high heat. \n4. Cook salmon for 4-5 minutes per side or until cooked through. \n5. While the salmon is cooking, wilt spinach in a separate skillet over medium heat. \n6. Remove from heat and squeeze lemon juice over the spinach. \n7. Serve salmon on top of quinoa with wilted spinach on the side. Sprinkle with fresh dill.",
+        "meal": "dinner",
+        "calories": 450
+        },
+        {
+            "name": "Chocolate Chip Cookies",
+            "recipe": "1. Preheat the oven to 350°F. Line a baking sheet with parchment paper. \n2. In a large mixing bowl, cream together the butter and sugar until light and fluffy. \n3. Beat in the eggs, one at a time, then stir in the vanilla. \n4. In a separate mixing bowl, combine the flour, baking soda, and salt. \n5. Slowly add the dry ingredients to the butter mixture and mix until well combined. \n6. Fold in the chocolate chips. \n7. Using a cookie scoop or spoon, drop rounded balls of dough onto the prepared baking sheet. \n8. Bake for 12-15 minutes, or until golden brown. \n9. Remove from the oven and let the cookies cool on the baking sheet for 5 minutes before transferring them to a wire rack to cool completely.",
+            "meal": "dessert",
+            "calories": 120
+        },
+        {
+            "name": "Spaghetti with Meatballs",
+            "recipe": "1. Cook spaghetti according to package instructions. \n2. In a mixing bowl, combine ground beef, breadcrumbs, parmesan cheese, egg, minced onion, garlic, salt and pepper. Mix thoroughly. \n3. Form mixture into small meatballs. \n4. Heat a skillet over medium heat and add olive oil. \n5. Add meatballs to the skillet and brown on all sides. \n6. Add crushed tomatoes, Italian seasoning, salt and pepper. \n7. Bring to a simmer and cook for 15-20 minutes, or until meatballs are cooked through. \n8. Serve meatballs and sauce over cooked spaghetti.",
+            "meal": "dinner",
+            "calories": 550
+        },
+        {
+            "name": "Pancakes",
+            "recipe": "1. In a mixing bowl, combine flour, sugar, baking powder, and salt. \n2. In a separate mixing bowl, beat together the eggs, milk, and melted butter. \n3. Gradually add the wet ingredients to the dry ingredients, stirring until just combined. \n4. Heat a skillet or griddle over medium heat. \n5. Ladle about 1/4 cup of batter onto the skillet for each pancake. \n6. Cook until bubbles form on the surface of the pancake, then flip and cook for an additional 1-2 minutes. \n7. Serve pancakes with butter and maple syrup.",
+            "meal": "breakfast",
+            "calories": 200
+        },
+        {
+            "name": "Taco Salad",
+            "recipe": "1. In a skillet over medium heat, brown ground beef and drain off any excess fat. \n2. Add taco seasoning and water and stir to combine. \n3. Allow to simmer for 5 minutes. \n4. In a large bowl, combine lettuce, diced tomatoes, shredded cheese, and crumbled tortilla chips. \n5. Add the beef mixture and toss to combine. \n6. Serve with sour cream, guacamole, and salsa, if desired.",
+            "meal": "lunch",
+            "calories": 350
+        }
+    
+        ]
