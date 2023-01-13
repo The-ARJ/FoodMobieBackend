@@ -1,46 +1,27 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const reviewSchema = mongoose.Schema({
-  body: {
-    type: String,
-    required: true,
-  },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
-  date: { type: Date, default: Date.now },
-  reviewer:{type:mongoose.Schema.Types.ObjectId,
-ref:'User'}
-});
-
-const foodSchema = mongoose.Schema(
-  {
-    foodname: {
-      type: String,
-      required: true,
+const foodSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
     },
-    image: {
-      type: String,
-      required: true,
-    },
-    calories: {
-      type: Number,
-      required: true,
+    meal: {
+        type: String,
+        enum: ['breakfast', 'lunch', 'dinner'],
+        required: true
     },
     recipe: {
-      type: String,
-      required: true,
+        type: String,
+        required: true
     },
-    reviews: [reviewSchema],
+    calories: {
+        type: Number,
+        required: true
+    },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+  }
+},{ timestamps: true });
 
-    category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
-       owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }
-  },
-  { timestamps: true }
-);
-
-module.exports = mongoose.model("Food", foodSchema);
+module.exports = mongoose.model('Food', foodSchema);
