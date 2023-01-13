@@ -1,3 +1,4 @@
+const { recommendFood, recommendedFood } = require('../utils/recommendation');
 const express = require("express");
 const router = express.Router();
 const foodController = require("../controllers/food-controller");
@@ -12,7 +13,10 @@ router
   .route("/")
   .get(foodController.getAllFoods)
   .post(verifyManager, foodController.createFood)
-  .put((req, res) => res.status(501).json({ msg: "Not implemented" }))
+//   .get('/recommendation', (req, res) => {
+//     res.json(recommendedFood);
+// })
+  .put((req, res) => res.status(501).json({ 'msg': "Not implemented" }))
   .delete(verifyAdmin, foodController.deleteAllFoods);
 
 router
