@@ -9,19 +9,22 @@ const getAllFoods = (req, res, next) => {
 };
 
 const createFood = (req, res, next) => {
-  console.log(req.bo)
+  console.log(req.body)
+  console.log(req.user)
   let food = {
-    foodname: req.body.foodname,
-    image: req.body.image,
-    calories: req.body.calories,
+    name: req.body.name,
+    // image: req.body.image,
+    meal: req.body.meal,
     recipe: req.body.recipe,
+    calories: req.body.calories,
     owner: req.user.id,
-  };
+    
+  }
   Food.create(food)
     .then((food) => {
       res.status(201).json(food);
     })
-    .catch(next);
+    .catch('next');
 };
 
 const deleteAllFoods = (req, res, next) => {
