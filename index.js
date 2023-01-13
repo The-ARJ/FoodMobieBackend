@@ -9,44 +9,15 @@ const userRouter = require('./routes/users-routes')
 const profilesRouter = require('./routes/profile-routes')
 const auth = require('./middleware/auth')
 const port = process.env.PORT || 3001
-
+const cors = require('cors');
+const reommendationRouter = require('./routes/recommendation-routes')
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log('Connected to MongoDB')
-}).catch((err) => console.log(err))
+}).catch((err) => console.log(err)) 
 
 const app = express()
-const fs = require('fs');
-const cron = require('node-cron');
-updateRecommendations();
 
-let recommendedFood = {
-    breakfast: {},
-    lunch: {},
-    dinner: {}
-};
 
-cron.schedule('0 0 0 * * *', () => {
-    updateRecommendations();
-});
-
-function updateRecommendations() {
-    fs.readFile('food.json', 'utf8', (err, data) => {
-        if (err) throw err;
-        let foodData = JSON.parse(data);
-        recommendedFood.breakfast = recommendFood('breakfast', foodData);
-        recommendedFood.lunch = recommendFood('lunch', foodData);
-        recommendedFood.dinner = recommendFood('dinner', foodData);
-    });
-}
-
-function recommendFood(meal, foodData) {
-    const suitableFood = foodData.filter(item => item.meal === meal);
-    return suitableFood[Math.floor(Math.random() * suitableFood.length)];
-}
-
-app.get('/recommendation', (req, res) => {
-    res.json(recommendedFood);
-});
 
 
 app.use((req, res, next) => {
@@ -69,17 +40,16 @@ app.get('^/$|/index(.html)?', (req, res) => {
 
 
 
-
+  
 // Router level Middleware
 app.use('/users', userRouter)
-// app.use(auth.verifyUser)
+app.use(auth.verifyUser)
 app.use('/profiles',auth.verifyUser, profilesRouter)
 app.use('/foods', foodsRouter)
 app.use('/categories', categoryRouter)
-
-
-const cors = require('cors');
+app.use('/recommendation',reommendationRouter)
 app.use(cors())
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
