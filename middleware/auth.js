@@ -16,16 +16,15 @@ const verifyUser = (req, res, next) => {
 }
 
 const verifyAdmin = (req, res, next) => {
-    if (req.user.role != 'Admin') {
+    if (req.user.role != 'admin') {
         res.status(403)
-        return next(new Error('Not Admin'))
+        return next(new Error('Not admin'))
     }
     next()
 }
 
 const verifyManager = (req, res, next) => {
-    // if (req.user.role == 'manager' || req.user.role == 'admin') return next()
-    if (req.user.role == 'manager' || req.user.role == 'Admin') return next()
+    if (req.user.role == 'manager' || req.user.role == 'admin') return next()
     else {
         res.status(403)
         return next(new Error('Not authorized'))
