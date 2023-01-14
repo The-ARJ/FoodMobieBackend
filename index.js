@@ -11,6 +11,9 @@ const auth = require('./middleware/auth')
 const port = process.env.PORT || 3001
 const cors = require('cors');
 const reommendationRouter = require('./routes/recommendation-routes')
+const reminderRoutes = require('./routes/reminder-routes');
+const scheduler = require('./utils/reminder-notification');
+
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log('Connected to MongoDB')
 }).catch((err) => console.log(err)) 
@@ -48,7 +51,10 @@ app.use('/profiles',auth.verifyUser, profilesRouter)
 app.use('/foods', foodsRouter)
 app.use('/categories', categoryRouter)
 app.use('/recommendation',reommendationRouter)
+app.use('/reminders', reminderRoutes);
+
 app.use(cors())
+
 
 
 // Error handling middleware
