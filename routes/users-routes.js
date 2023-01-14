@@ -9,59 +9,67 @@ router.post("/register", (req, res, next) => {
   User.findOne({ username: req.body.username })
     .then((user) => {
       if (user != null) {
-        res.status(400);
-        return next(new Error(`Username ${req.body.username} already exists`));
+        return res.status(400).json({ error: "Username already exists" });
       }
+
       bcrypt.hash(req.body.password, 10, (err, hash) => {
-        if (err) next(err);
-        let user = new User();
-        user.username = req.body.username;
-        if (req.body.role) user.role = req.body.role;
-        user.password = hash;
-        user
+        if (err) return next(err);
+
+        const newUser = new User({
+          username: req.body.username,
+          password: hash,
+          role: req.body.role || "user",
+        });
+
+        newUser
           .save()
           .then((user) => {
-            data = {
+            const data = {
               id: user._id,
               username: user.username,
               role: user.role,
             };
-            res
+            return res
               .status(201)
               .json({ status: "User registration success.", data });
           })
           .catch((err) => {
-            res.status(400);
-            next(err);
+            return res
+              .status(400)
+              .json({ error: "Error saving user in database" });
           });
       });
     })
-    .catch(next);
+    .catch((err) => {
+      return res.status(500).json({ error: "Server Error" });
+    });
 });
 
 router.post("/login", (req, res, next) => {
   User.findOne({ username: req.body.username })
     .then((user) => {
-      if (user == null) {
-        res.status(401);
-        return next(new Error(`User ${req.body.username} has not registered.`));
+      if (!user) {
+        return res.status(401).json({ error: "Invalid credentials" });
       }
-      bcrypt.compare(req.body.password, user.password, (err, status) => {
+
+      bcrypt.compare(req.body.password, user.password, (err, isMatch) => {
         if (err) return next(err);
-        if (!status) {
-          res.status(401);
-          return next(new Error("Password does not match!"));
+        if (!isMatch) {
+          return res.status(401).json({ error: "Invalid credentials" });
         }
-        data = {
+
+        const data = {
           id: user._id,
           username: user.username,
           role: user.role,
         };
-        const token = jwt.sign(data, process.env.SECRET, { expiresIn: "1h" });
-        res.json({ status: "Login Success", token: token });
+        const token = jwt.sign(data, process.env.SECRET, { expiresIn: "24h" });
+        return res.json({ status: "Login Success", token });
       });
     })
-    .catch(next);
+    .catch((err) => {
+      return res.status(500).json({ error: "Server Error" });
+    });
 });
 
 module.exports = router;
