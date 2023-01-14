@@ -3,7 +3,7 @@ const path = require('path');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    if (file.fieldname === 'userProfile') {
+    if (file.fieldname === 'profile') {
       cb(null, './uploads/user-profiles');
     } else if (file.fieldname === 'foodImage') {
       cb(null, './uploads/food-images');
@@ -25,7 +25,7 @@ const imageFileFilter = (req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter: imageFileFilter,
-  limits: { fileSize: 2 * 1024 * 1024 },
+  limits: { fileSize: 5 * 1024 * 1024 },
 });
 
 module.exports = upload;

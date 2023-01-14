@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const {
   recommendedFood,
-  recommendationController,
 } = require("../controllers/recommedation-controller");
 
 const validMeals = ["breakfast", "lunch", "dinner"]; // array of valid meal types
