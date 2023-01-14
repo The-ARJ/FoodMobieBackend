@@ -1,5 +1,4 @@
 const Food = require("../models/Food");
-
 const getAllFoods = (req, res, next) => {
   Food.find()
     .then((foods) => {
@@ -16,11 +15,12 @@ const createFood = (req, res, next) => {
   // console.log(req.body);
   // console.log(req.user);
   let food = {
-    name: req.body.name,
-    // image: req.body.image,
-    meal: req.body.meal,
-    recipe: req.body.recipe,
-    calories: req.body.calories,
+    ...req.body,
+    // name: req.body.name,
+    image: req.file.filename,
+    // meal: req.body.meal,
+    // recipe: req.body.recipe,
+    // calories: req.body.calories,
     owner: req.user.id,
   };
   Food.create(food)
