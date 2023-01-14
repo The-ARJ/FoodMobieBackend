@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const foodController = require("../controllers/food-controller");
 const reviewController = require("../controllers/review-controller");
+const upload = require("../middleware/upload");
 const {
   verifyUser,
   verifyManager,
@@ -11,7 +12,7 @@ const {
 router
   .route("/")
   .get(verifyUser,verifyManager,foodController.getAllFoods)
-  .post(verifyManager, foodController.createFood)
+  .post(verifyManager, upload.single("foodImage"), foodController.createFood)
   .put((req, res) => res.status(501).json({ 'msg': "Not implemented" }))
   .delete(verifyAdmin, foodController.deleteAllFoods);
 
