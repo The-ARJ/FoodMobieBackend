@@ -56,9 +56,9 @@ function getBreakfastRecommendation(foodData) {
 
 
 // This schedule pattern is set to run at minute 0, hour 7, every day of the month, every month, and every day of the week.
-cron.schedule("0 0 7 * * *", () => {
-    updateRecommendations();
-    });
+// cron.schedule("0 0 7 * * *", () => {
+//     updateRecommendations();
+//     });
     
 // Scheduling the update recommendations task to run in every 1 min 
 
