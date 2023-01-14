@@ -1,28 +1,31 @@
-const multer = require('multer')
-const path = require('path')
-
+const multer = require('multer');
+const path = require('path');
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './uploads')
-    },
-    filename: (req, file, cb) =>{
-        let ext = path.extname(file.originalname)
-        cb(null,`${file.fieldname}--${Date.now()}${ext}`)
+  destination: (req, file, cb) => {
+    if (file.fieldname === 'userProfile') {
+      cb(null, './uploads/user-profiles');
+    } else if (file.fieldname === 'foodImage') {
+      cb(null, './uploads/food-images');
     }
-})
+  },
+  filename: (req, file, cb) => {
+    let ext = path.extname(file.originalname);
+    cb(null, `${file.fieldname}--${Date.now()}${ext}`);
+  },
+});
 
-const imageFileFilter = (res,file,cb)=>{
-    if(!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)){
-        return cb(new Error('File format not supported'),false)
-    }
-    cb(null,true)
-}
+const imageFileFilter = (req, file, cb) => {
+  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+    return cb(new Error('Invalid file format. Only jpg, jpeg, png and gif are allowed.'), false);
+  }
+  cb(null, true);
+};
 
-const upload = multer({ storage: storage,
-fileFilter:imageFileFilter,
-limits:{fileSize:2 * 1024 * 1024}
-})
+const upload = multer({
+  storage,
+  fileFilter: imageFileFilter,
+  limits: { fileSize: 2 * 1024 * 1024 },
+});
 
-
-module.exports = upload
+module.exports = upload;
