@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
-const logger = require('./logger')
+// const logger = require('./logger')
 const foodsRouter = require('./routes/foods-routes')
 const categoryRouter = require('./routes/category-routes')
 const userRouter = require('./routes/users-routes')
@@ -23,7 +23,7 @@ const app = express()
 
 
 app.use((req, res, next) => {
-    logger.log(`${req.method}\t${req.headers.origin}\t${req.path}`)
+    // logger.log(`${req.method}\t${req.headers.origin}\t${req.path}`)
     console.log(`${req.method} ${req.path}`)
     next()
 })
