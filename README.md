@@ -1,4 +1,4 @@
-<h1>Food Recommendation Web API</h1>
+<h1>FoodMobie Web API</h1>
 <p>A web API for food recommendation, developed using Node.js, Express, and MongoDB.</p>
 <h2>Table of Contents</h2>
 <ul>
