@@ -844,3 +844,11 @@ ce0e61d1-d473-46b9-93dd-c80d0d0eca51	20230115	16:13:32	POST	undefined	/reminders
 be405082-c849-46df-9553-9057824857aa	20230115	16:14:47	POST	undefined	/reminders 
 059ace60-c369-4eb4-891d-772b94ee807d	20230115	16:20:42	POST	undefined	/reminders 
 bc35a19e-c20d-49c4-8474-64c1b2edba85	20230115	16:21:58	POST	undefined	/reminders 
+4bbc74ca-d7ae-4a1a-85a4-94a67833afd3	20230115	16:41:20	POST	undefined	/recommendations 
+305b56bb-976e-4ee6-828d-264ca8396acd	20230115	16:41:33	POST	undefined	/recommendations 
+4f7f165a-6e51-4ec4-b2a9-a239331c8aff	20230115	16:41:38	GET	undefined	/recommendations 
+91483d45-9490-4455-b789-8710ef7b4fa5	20230115	16:41:39	GET	undefined	/recommendations 
+c63e9ef7-3cae-4f60-a986-d2282374ee2e	20230115	16:41:39	GET	undefined	/recommendations 
+aa9f80c2-33a7-4810-8b25-95568a8894f8	20230115	16:41:39	GET	undefined	/recommendations 
+807095a1-d3d9-4a34-982a-ed2d820f1e03	20230115	16:41:44	GET	undefined	/recommendation 
+4ad62f38-4b9a-4c0d-b062-c3b702731032	20230115	16:41:52	GET	undefined	/recommendation 
