@@ -66,7 +66,7 @@ function getBreakfastRecommendation(foodData) {
 //     });
 
 // Scheduling the update recommendations task to run in every 1 min
-cron.schedule("* * * * *", () => {
+cron.schedule("0 0 7 * * *", () => {
   const data = {
     from: "FoodMobie: <foodmobie@gmail.com>",
     to: "joshiaayush871@gmail.com",
