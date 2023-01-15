@@ -12,7 +12,6 @@ const port = process.env.PORT || 3001
 const cors = require('cors');
 const reommendationRouter = require('./routes/recommendation-routes')
 const reminderRoutes = require('./routes/reminder-routes');
-const scheduler = require('./utils/reminder-notification');
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log('Connected to MongoDB')
