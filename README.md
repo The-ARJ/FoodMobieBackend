@@ -1,99 +1,33 @@
-<h1>Food Recommendation Web API</h1>
-<p>A web API for food recommendation, developed using Node.js, Express, and MongoDB.</p>
-<h2>Table of Contents</h2>
+<h1>FoodMobie</h1>
+<h2>Food recommendation and reminder application</h2>
+<p>FoodMobie is a food recommendation and reminder application that helps users keep track of their daily food intake and stay on top of their dietary goals. The application allows users to create reminders for specific meals and receive notifications at the designated time. Users can also browse and search for food recommendations based on their preferences.</p>
+<h3>API Endpoints</h3>
 <ul>
-  <li><a href="#features">Features</a></li>
-  <li><a href="#technologies">Technologies</a></li>
-  <li><a href="#prerequisites">Prerequisites</a></li>
-  <li><a href="#installation">Installation</a></li>
-  <li><a href="#usage">Usage</a></li>
-  <li><a href="#api-reference">API Reference</a></li>
-  <li><a href="#tests">Tests</a></li>
-  <li><a href="#deployment">Deployment</a></li>
-  <li><a href="#contributing">Contributing</a></li>
-  <li><a href="#license">License</a></li>
+  <li>To access food information: http://localhost:3001/foods</li>
+  <li>To access food recommendations: http://localhost:3001/recommendations</li>
+  <li>To access reminder functionality: http://localhost:3001/reminders</li>
+  <li>To login: http://localhost:3001/users/login</li>
+  <li>To register: http://localhost:3001/users/register</li>
 </ul>
-<h2 id="features">Features</h2>
+<h3>Getting Started</h3>
+<ol>
+  <li>Clone the repository</li>
+  <li>Run npm install to install all dependencies</li>
+  <li>Run npm start to start the server</li>
+  <li>Make sure to configure the database settings in the .env file</li>
+</ol>
+<h3>Built With</h3>
 <ul>
-  <li>Recommend different types of food to the users</li>
-  <li>Automatically recommend new food daily (breakfast, lunch, dinner)</li>
-  <li>Food information includes name, image, calorie, and recipe</li>
-  <li>Allow users to add their own food list (breakfast, lunch, dinner) for each day of the week</li>
+  <li>Node.js</li>
+  <li>Express.js</li>
+  <li>MongoDB</li>
+  <li>Mongoose</li>
 </ul>
-<h2 id="technologies">Technologies</h2>
+<h3>Authors</h3>
 <ul>
-<p>
-  <li>Node.js</li>
-  <li>Express</li>
-  <li>MongoDB</li>
-</p>
-<h2 id="prerequisites">Prerequisites</h2>
-<p>
-  <li>Node.js</li>
-  <li>MongoDB</li>
-</p>
-<h2 id="installation">Installation</h2>
-<ol>
-  <li>Clone the repository:
-<pre>
-git clone https://github.com/<USERNAME>/food-recommendation-web-api.git
-</pre>
-  </li>
-  <li>Install the dependencies:
-<pre>
-cd food-recommendation-web-api
-npm install
-</pre>
-  </li>
-  <li>Set the environment variables in a <code>.env</code> file:
-<pre>
-MONGODB_URI=<mongodb_connection_string>
-</pre>
-  </li>
-  <li>Start the server:
-<pre>
-npm start
-</pre>
-  </li>
-</ol>
-<h2 id="usage">Usage</h2>
-<ol>
-  <li>Make a GET request to <code>http://localhost:3000/food/recommendation</code> to get the recommended food.</li>
-  <li>Make a POST request to <code>http://localhost:3000/food/recommendation</code> with the following JSON body to add a new recommendation:
-<pre>
-{
-  "name": "Pizza",
-  "image": "https://pizza.com/pizza.jpg",
-  "calorie": 300,
-  "recipe": "https://pizza.com/recipe"
-}
-</pre>
-
-    <li>Make a GET request to <code>http://localhost:3000/food/recommendation/:id</code> to get a recommendation by ID.</li>
-  <li>Make a PUT request to <code>http://localhost:3000/food/recommendation/:id</code> with the following JSON body to update a recommendation by ID:
-<pre>
-{
-  "name": "Pizza",
-  "image": "https://pizza.com/pizza.jpg",
-  "calorie": 300,
-  "recipe": "https://pizza.com/recipe"
-}
-</pre>
-  </li>
-  <li>Make a DELETE request to <code>http://localhost:3000/food/recommendation/:id</code> to delete a recommendation by ID.</li>
-</ol>
-<h2 id="api-reference">API Reference</h2>
-
-
- <h2 id="deployment">Deployment</h2>
-To deploy this API, follow these steps:
-
-Make sure you have Node.js and npm installed on your machine.
-Clone this repository and navigate to the project directory.
-Install the necessary dependencies by running npm install.
-Set up a MongoDB database and add the connection string to a .env file in the root directory of the project.
-Start the server by running npm start.
-<h2 id="contributing">Contributing</h2>
-No Contibutr is Required!!
-<h2 id="license">License</h2>
-This project is licensed under the MIT License. See the LICENSE file for more details.
+  <li>Aayush Raj Joshi</li>
+  <li>email:joshiaayush871@gmail.com</li>
+    <li>more about me: https://aayushrajjoshi.com.np/</li>
+</ul>
+<h3>License</h3>
+<p>This project is licensed under the MIT License</p>
