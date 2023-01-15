@@ -1,5 +1,6 @@
 const Reminder = require("../models/Reminder");
-const cron = require('node-cron');
+const cron = require("node-cron");
+const { scheduleReminder } = require("../utils/reminder-notification");
 
 const getAllReminders = async (req, res, next) => {
   try {
@@ -12,29 +13,25 @@ const getAllReminders = async (req, res, next) => {
   }
 };
 
-const createReminder = (req, res, next) => {
-  // console.log(req.body);
-  // console.log(req.user);
-  let food = {
-    ...req.body,
-    owner: req.user.id,
-  };
-  Reminder.create(food)
-    .then((food) => {
-      res.status(201).json({
-        message: "Reminder created successfully",
-        food,
-      });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: "Error creating food",
-        error: error.message,
-      });
+const createReminder = async (req, res, next) => {
+  try {
+    let reminder = {
+      ...req.body,
+      owner: req.user.id,
+    };
+    const createdReminder = await Reminder.create(reminder);
+    scheduleReminder(createdReminder);
+    res.status(201).json({
+      message: "Reminder created successfully",
+      createdReminder,
     });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error creating food",
+      error: error.message,
+    });
+  }
 };
-
-
 const deleteAllReminders = async (req, res, next) => {
   try {
     await Reminder.deleteMany({ userId: req.user.id });
