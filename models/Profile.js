@@ -12,7 +12,7 @@ const profileSchema = mongoose.Schema({
     image: {
         type: String
     },
-    user: {
+    owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }
