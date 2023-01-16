@@ -13,7 +13,7 @@ const getAllNotifications = async (req, res, next) => {
       ).toDate();
       return scheduledDate < currentDate;
     });
-    console.log(filteredNotifications)
+    // console.log(filteredNotifications);
     res.status(200).json({
       message: "All notifications retrieved successfully",
       notifications: filteredNotifications,
@@ -25,23 +25,33 @@ const getAllNotifications = async (req, res, next) => {
 
 const createNotification = async (req, res, next) => {
   try {
-    let notification = {
-      ...req.body,
+    const currentDate = new Date();
+    const date = req.body.date || currentDate.toISOString().slice(0, 10);
+    currentDate.setSeconds(currentDate.getSeconds() + 1);
+    let time = req.body.time || currentDate.toTimeString().slice(0, 8);
+
+    const newNotification = new Notification({
+      title: req.body.title,
+      description: req.body.description,
+      date,
+      time,
+      owner: req.body.owner,
       image: req.file.filename,
       owner: req.user.id,
       isRead: false,
-    };
-    const createdNotification = await Notification.create(notification);
+    });
+
+    const createdNotification = await Notification.create(newNotification);
     scheduleNotification(createdNotification);
+
     res.status(201).json({
-      message: "Notification created successfully",
-      createdNotification,
+      message: "Notification created and scheduled successfully",
+      notification: createdNotification,
     });
   } catch (error) {
-    res.status(500).json({
-      message: "Error creating notification",
-      error: error.message,
-    });
+    res
+      .status(500)
+      .json({ message: "Error creating and scheduling notification", error });
   }
 };
 
