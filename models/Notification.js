@@ -13,7 +13,7 @@ const notificationSchema = new mongoose.Schema({
     type: String,
   },
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   time: {
@@ -44,6 +44,10 @@ const notificationSchema = new mongoose.Schema({
       },
     },
   ],
+  isNotified: {
+    type: Boolean,
+    default: false,
+  },
 });
 const Notification = mongoose.model("Notification", notificationSchema);
 

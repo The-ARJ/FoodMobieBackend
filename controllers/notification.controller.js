@@ -1,37 +1,48 @@
 const Notification = require("../models/Notification");
+const { scheduleNotification } = require("../utils/notification-alert");
+const moment = require("moment");
 
 const getAllNotifications = async (req, res, next) => {
   try {
-    const notifications = await Notification.find();
+    const currentDate = new Date();
+    const notifications = await Notification.find({});
+    const filteredNotifications = notifications.filter((notification) => {
+      const scheduledDate = moment(
+        `${notification.date} ${notification.time}`,
+        "YY-MM-DD HH:mm"
+      ).toDate();
+      return scheduledDate < currentDate;
+    });
+    console.log(filteredNotifications)
     res.status(200).json({
       message: "All notifications retrieved successfully",
-      notifications,
+      notifications: filteredNotifications,
     });
   } catch (error) {
     res.status(500).json({ message: "Error retrieving notifications", error });
   }
 };
 
-const createNotification = (req, res, next) => {
-  let notification = {
-    ...req.body,
-    image: req.file.filename,
-    owner: req.user.id,
-    isRead: false,
-  };
-  Notification.create(notification)
-    .then((notification) => {
-      res.status(201).json({
-        message: "Notification created successfully",
-        notification,
-      });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: "Error creating notification",
-        error: error.message,
-      });
+const createNotification = async (req, res, next) => {
+  try {
+    let notification = {
+      ...req.body,
+      image: req.file.filename,
+      owner: req.user.id,
+      isRead: false,
+    };
+    const createdNotification = await Notification.create(notification);
+    scheduleNotification(createdNotification);
+    res.status(201).json({
+      message: "Notification created successfully",
+      createdNotification,
     });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error creating notification",
+      error: error.message,
+    });
+  }
 };
 
 const deleteAllNotifications = async (req, res, next) => {
@@ -91,7 +102,7 @@ const updateNotificationById = async (req, res, next) => {
       .json({ message: "Notification updated successfully", notification });
   } catch (error) {
     res.status(500).json({ message: "Error updating notification", error });
-    console.log(error)
+    console.log(error);
   }
 };
 
