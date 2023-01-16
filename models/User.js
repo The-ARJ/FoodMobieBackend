@@ -3,9 +3,21 @@ const mongoose = require('mongoose')
 const userSchema = mongoose.Schema({
     username: {
         type: String,
-        required: [true, 'Username is required'],
-        unique: [true, 'Username matches with existing users'],
-        minLength: 6
+        // required: [true, 'Username is required'],
+        unique: [true, 'Username not available'],
+    },
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: [true, 'Email is required'],
+        unique: [true, 'Email Already Exists'],
     },
     password: {
         type: String,

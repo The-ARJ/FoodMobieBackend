@@ -6,17 +6,20 @@ const User = require("../models/User");
 const router = express.Router();
 
 router.post("/register", (req, res, next) => {
-  User.findOne({ username: req.body.username })
+  User.findOne({ email: req.body.email })
     .then((user) => {
       if (user != null) {
-        return res.status(400).json({ error: "Username already exists" });
+        return res.status(400).json({ error: "Email already exists" });
       }
 
       bcrypt.hash(req.body.password, 10, (err, hash) => {
         if (err) return next(err);
 
         const newUser = new User({
-          username: req.body.username,
+          username : req.body.username,
+          firstName : req.body.firstName,
+          lastName : req.body.lastName,
+          email: req.body.email,
           password: hash,
           role: req.body.role || "user",
         });
@@ -26,7 +29,7 @@ router.post("/register", (req, res, next) => {
           .then((user) => {
             const data = {
               id: user._id,
-              username: user.username,
+              email: user.email,
               role: user.role,
             };
             return res
@@ -34,9 +37,11 @@ router.post("/register", (req, res, next) => {
               .json({ status: "User registration success.", data });
           })
           .catch((err) => {
+            console.log(err)
             return res
               .status(400)
-              .json({ error: "Error saving user in database" });
+              .json({ error: "Error saving user in database" },
+              );
           });
       });
     })
@@ -46,7 +51,7 @@ router.post("/register", (req, res, next) => {
 });
 
 router.post("/login", (req, res, next) => {
-  User.findOne({ username: req.body.username })
+  User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
         return res.status(401).json({ error: "Invalid credentials" });
@@ -60,7 +65,7 @@ router.post("/login", (req, res, next) => {
 
         const data = {
           id: user._id,
-          username: user.username,
+          email: user.email,
           role: user.role,
         };
         const token = jwt.sign(data, process.env.SECRET, { expiresIn: "24h" });
