@@ -1,23 +1,30 @@
 const express = require("express");
 const router = express.Router();
 const notificationsController = require("../controllers/notification.controller");
+const upload = require("../middleware/upload");
+const {
+  verifyUser,
+  verifyManager,
+  verifyAdmin,
+} = require("../middleware/auth");
 
 // GET all notifications
-router.get("/", notificationsController.getAllNotifications);
+router
+  .route("/")
+  .get(verifyUser,notificationsController.getAllNotifications)
+  .post(verifyManager,
+    upload.single("notifyImage"),
+    notificationsController.createNotification
+  )
+  .delete(verifyManager,notificationsController.deleteAllNotifications);
 
-// GET a specific notification by ID
-router.get("/:notification_id", notificationsController.getNotificationById);
+router
+  .route("/:notification_id")
+  .get(verifyUser,notificationsController.getNotificationById)
+  .put(verifyManager,verifyUser,upload.single("notifyImage"),notificationsController.updateNotificationById)
+  .delete(verifyManager,notificationsController.deleteNotificationById);
 
-// POST a new notification
-router.post("/", notificationsController.createNotification);
-
-// PUT (update) a specific notification by ID
-router.put("/:notification_id", notificationsController.updateNotificationById);
-
-// DELETE a specific notification by ID
-router.delete(
-  "/:notification_id",
-  notificationsController.deleteNotificationById
-);
-
+router.get("/get/allunread", verifyUser, notificationsController.getAllUnread);
+router.put("/:notification_id/read", notificationsController.markAsRead);
+router.put("/read/all",verifyUser, notificationsController.markAllAsRead);
 module.exports = router;
