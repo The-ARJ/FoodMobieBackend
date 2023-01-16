@@ -18,22 +18,6 @@ const scheduleReminder = async () => {
     if (reminder) {
       let scheduleDate = new Date(reminder.date + " " + reminder.time);
       schedule.scheduleJob(scheduleDate, () => {
-        // const msg = {
-        //   // to: reminder.user.email,
-        //   to: "joshiaayush871@gmail.com",
-        //   from: "aayushrajjoshi4@gmail.com",
-        //   subject: "Reminder",
-        //   text: reminder.message || "Don't forget to eat your",
-        //   html: "<strong>" + reminder.message + "</strong>",
-        // };
-        // sgMail
-        //   .send(msg)
-        //   .then((res) => {
-        //     console.log("Email Sent..");
-
-        //   })
-        //   .catch((error) => console.log(error));
-
         const data = {
           from: "FoodMobie: <foodmobie@gmail.com>",
           to: "joshiaayush871@gmail.com",
@@ -81,11 +65,11 @@ const scheduleReminder = async () => {
           }
         });
 
-        console.log(
-          "Sending notification for reminder:",
-          reminder.owner.username,
-          reminder
-        );
+        // console.log(
+        //   "Sending notification for reminder:",
+        //   reminder.owner.username,
+        //   reminder
+        // );
         reminder.isNotified = true;
         reminder.save();
       });
