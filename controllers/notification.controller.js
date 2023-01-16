@@ -3,12 +3,10 @@ const Notification = require("../models/Notification");
 const getAllNotifications = async (req, res, next) => {
   try {
     const notifications = await Notification.find();
-    res
-      .status(200)
-      .json({
-        message: "All notifications retrieved successfully",
-        notifications,
-      });
+    res.status(200).json({
+      message: "All notifications retrieved successfully",
+      notifications,
+    });
   } catch (error) {
     res.status(500).json({ message: "Error retrieving notifications", error });
   }
@@ -16,10 +14,10 @@ const getAllNotifications = async (req, res, next) => {
 
 const createNotification = (req, res, next) => {
   let notification = {
-    title: req.body.title,
-    image: req.body.image,
-    description: req.body.description,
-    date: req.body.date,
+    ...req.body,
+    image: req.file.filename,
+    owner: req.user.id,
+    isRead: false,
   };
   Notification.create(notification)
     .then((notification) => {
@@ -53,7 +51,9 @@ const getNotificationById = async (req, res, next) => {
       _id: req.params.notification_id,
     });
     if (!notification) {
-      return res.status(404).json({ message: "Notification not found" });
+      return res
+        .status(404)
+        .json({ message: "You are getting notification by id" });
     }
     res
       .status(200)
@@ -71,18 +71,27 @@ const updateNotificationById = async (req, res, next) => {
     if (!notification) {
       return res.status(404).json({ message: "Notification not found" });
     }
-    notification.title = req.body.title || notification.title;
-    notification.description = req.body.description || notification.description;
-    notification.image = req.body.image || notification.image;
-    notification.date = req.body.date || notification.date;
-    notification.time = req.body.time || notification.time;
-    notification.active = req.body.active || notification.active;
+    notification.title = req.body.title;
+    notification.description = req.body.description;
+    notification.image = req.file.filename || notification.image;
+    notification.date = req.body.date;
+    notification.time = req.body.time;
+    let userRead = notification.reads.find((read) => read.user == req.user.id);
+    if (userRead) {
+      userRead.isRead = req.body.isRead;
+    } else {
+      notification.reads.push({
+        user: req.user.id,
+        isRead: req.body.isRead,
+      });
+    }
     await notification.save();
     res
       .status(200)
       .json({ message: "Notification updated successfully", notification });
   } catch (error) {
     res.status(500).json({ message: "Error updating notification", error });
+    console.log(error)
   }
 };
 
@@ -100,6 +109,71 @@ const deleteNotificationById = async (req, res, next) => {
   }
 };
 
+const markAsRead = async (req, res, next) => {
+  try {
+    const notification = await Notification.findOne({
+      _id: req.params.notification_id,
+    });
+    if (!notification) {
+      return res.status(404).json({ message: "Notification not found" });
+    }
+    notification.isRead = true;
+    notification.readBy.push(req.user.id);
+    await notification.save();
+    res
+      .status(200)
+      .json({ message: "Notification marked as read", notification });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error marking notification as read", error });
+  }
+};
+
+const getAllUnread = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const unreadNotifications = await Notification.find({
+      isRead: false,
+      readBy: { $ne: userId },
+    });
+    if (!unreadNotifications.length) {
+      return res.status(404).json({ message: "No unread notifications found" });
+    }
+    res.status(200).json({
+      message: "All unread notifications retrieved successfully",
+      unreadNotifications,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving notifications", error });
+  }
+};
+
+const markAllAsRead = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const unreadNotifications = await Notification.find({
+      isRead: false,
+    });
+    if (!unreadNotifications.length) {
+      return res.status(404).json({ message: "No unread notifications found" });
+    }
+    unreadNotifications.forEach(async (notification) => {
+      if (!notification.readBy.includes(userId)) {
+        notification.readBy.push(userId);
+        await notification.save();
+      }
+    });
+    res.status(200).json({
+      message: "All unread notifications marked as read",
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error marking all notifications as read", error });
+  }
+};
+
 module.exports = {
   getAllNotifications,
   createNotification,
@@ -107,4 +181,7 @@ module.exports = {
   getNotificationById,
   updateNotificationById,
   deleteNotificationById,
+  markAsRead,
+  getAllUnread,
+  markAllAsRead,
 };
