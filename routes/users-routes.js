@@ -2,10 +2,29 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const {
+  verifyUser,
+  verifyManager,
+  verifyAdmin,
+} = require("../middleware/auth");
+const userController = require("../controllers/user-controller");
+const upload = require("../middleware/upload");
 
 const router = express.Router();
+router
+  .route("/")
+  .get(verifyUser, verifyManager, userController.getAllUsers)
+  .put((req, res) => res.status(501).json({ msg: "Not implemented" }))
+  .delete(verifyAdmin, userController.deleteAllUsers);
 
-router.post("/register", (req, res, next) => {
+// router
+//   .route("/:user_id")
+//   .get(userController.getUserById)
+//   .post((req, res) => res.status(501).json({ msg: "Not implemented" }))
+//   .put(userController.updateUserById)
+//   .delete(verifyAdmin, userController.deleteUserById);
+
+router.post("/", upload.single("userImage"), (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (user != null) {
@@ -16,9 +35,7 @@ router.post("/register", (req, res, next) => {
         if (err) return next(err);
 
         const newUser = new User({
-          username : req.body.username,
-          firstName : req.body.firstName,
-          lastName : req.body.lastName,
+
           email: req.body.email,
           password: hash,
           role: req.body.role || "user",
@@ -37,11 +54,10 @@ router.post("/register", (req, res, next) => {
               .json({ status: "User registration success.", data });
           })
           .catch((err) => {
-            console.log(err)
+            console.log(err);
             return res
               .status(400)
-              .json({ error: "Error saving user in database" },
-              );
+              .json({ error: "Error saving user in database" });
           });
       });
     })
