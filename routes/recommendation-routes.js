@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { recommendedFood, recommendedbreakfastFood,recommendeddinnerFood } = require("../controllers/recommedation-controller");
+const {
+  recommendedFood,
+  recommendedbreakfastFood,
+  recommendeddinnerFood,
+} = require("../controllers/recommedation-controller");
 
 const validMeals = ["breakfast", "lunch", "dinner"]; // array of valid meal types
 
@@ -41,8 +45,6 @@ router.get("/lunch", (req, res) => {
   }
 });
 
-
-
 router.get("/dinner", (req, res) => {
   let { meal } = req.query;
   if (!meal) {
@@ -61,6 +63,5 @@ router.get("/dinner", (req, res) => {
     return res.status(400).json({ message: "Invalid meal type" });
   }
 });
-
 
 module.exports = router;

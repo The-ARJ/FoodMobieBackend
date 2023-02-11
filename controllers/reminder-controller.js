@@ -72,7 +72,7 @@ const updateReminderById = async (req, res, next) => {
     reminder.meal = req.body.meal || reminder.meal;
     reminder.date = req.body.date || reminder.date;
     reminder.time = req.body.time || reminder.time;
-    reminder.recipeId = req.body.recipeId || reminder.recipeId;
+    reminder.recipe = req.body.recipe || reminder.recipe;
     reminder.message = req.body.message || reminder.message;
     reminder.repeat = req.body.repeat || reminder.repeat;
     await reminder.save();
