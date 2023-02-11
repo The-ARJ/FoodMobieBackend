@@ -1,5 +1,13 @@
 const Food = require("../models/Food");
+const cron = require("node-cron");
+
 require("dotenv").config();
+
+const domain = "sandboxef4dca1d47fc4f51b05381b8abe8f45a.mailgun.org";
+const mailgun = require("mailgun-js")({
+  apiKey: process.env.api_key,
+  domain: domain,
+});
 updateRecommendations();
 let recommendedFood = {
   lunch: {
@@ -74,6 +82,56 @@ function recommenddinnerFood(meal, foodData) {
   }
   return recommendeddinner;
 }
+
+cron.schedule("*/1 * * * *", () => {
+  const data = {
+    from: "FoodMobie: <foodmobie@gmail.com>",
+    to: "joshiaayush871@gmail.com",
+    subject: "Recommendation",
+    text: `<Strong>Hello Dear!</Strong>,<p> Here is your todays recommendation</p>`,
+    html: `
+      <html>
+        <head>
+          <style>
+            /* Add some styling to make the email look nice */
+            body {
+              font-family: Arial, sans-serif;
+              color: #444;
+            }
+            h1 {
+              font-size: 24px;
+              margin-bottom: 20px;
+              text-align: center;
+            }
+            p {
+              margin-bottom: 10px;
+              font-size: 18px;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>FoodMobie Recommendation</h1>
+          <p>
+          <Strong>Hello Dear!</Strong>
+          </p>
+          <p>
+            Don't forget to checkout today's recommendations
+          </p>
+          <p>
+        </body>
+      </html>
+      `,
+  };
+
+  mailgun.messages().send(data, function (error, body) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(body);
+    }
+  });
+  updateRecommendations();
+});
 module.exports = {
   recommendFood,
   recommendedFood,
