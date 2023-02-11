@@ -82,8 +82,9 @@ function recommenddinnerFood(meal, foodData) {
   }
   return recommendeddinner;
 }
-
-cron.schedule("*/1 * * * *", () => {
+// Every one minute "*/1 * * * *"
+// Every Day at 7 AM
+cron.schedule("0 0 7 * * *", () => {
   const data = {
     from: "FoodMobie: <foodmobie@gmail.com>",
     to: "joshiaayush871@gmail.com",
