@@ -7,16 +7,17 @@ const notificationSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: true,
   },
   image: {
     type: String,
   },
   date: {
     type: String,
+
   },
   time: {
     type: String,
+  
   },
   createdAt: {
     type: Date,
@@ -30,23 +31,22 @@ const notificationSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  reads: [
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-      isRead: {
-        type: Boolean,
-        default: false,
-      },
-    },
-  ],
-  isNotified: {
-    type: Boolean,
-    default: false,
-  },
+//   reads: [
+//     {
+//       user: {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: "User",
+//       },
+//       isRead: {
+//         type: Boolean,
+//         default: false,
+//       },
+//     },
+//   ],
+//   isNotified: {
+//     type: Boolean,
+//     default: false,
+//   },
 });
-// const Notification = mongoose.model("PushNotification", notificationSchema);
+module.exports = mongoose.model('Notifyjks', notificationSchema);
 
-module.exports = mongoose.model("Notification", notificationSchema);

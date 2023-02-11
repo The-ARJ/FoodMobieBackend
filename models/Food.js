@@ -17,8 +17,16 @@ const foodSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    time: {
+        type: String,
+        required: true
+    },
+    ingredients: {
+        type: String,
+        required: true
+    },
     calories: {
-        type: Number,
+        type: String,
         required: true
     },
     owner: {

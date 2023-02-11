@@ -14,10 +14,10 @@ router
       .catch(next);
   })
 
-  .post(upload.single("profile"), (req, res, next) => {
+  .post(upload.single("userImage"), (req, res, next) => {
     let profile = {
       ...req.body,
-      image: req.file.filename,
+      image: "/user_images/"+req.file.filename,
       user: req.user.userId,
     };
     Profile.create(profile)

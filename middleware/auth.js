@@ -6,7 +6,7 @@ const verifyUser = (req, res, next) => {
         res.status(401)
         return next(new Error('No authentication information provided'))
     }
-    const token = authHeader.split(' ')[1]
+    const token = authHeader.split(" ")[1]
     jwt.verify(token, process.env.SECRET, (err, decoded) => {
         if (err) return next(err)
         req.user = decoded

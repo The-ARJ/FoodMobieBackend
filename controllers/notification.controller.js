@@ -1,28 +1,41 @@
-const Notification = require("../models/Notification");
+const Notification = require("../models/alert");
 const { scheduleNotification } = require("../utils/notification-alert");
 const moment = require("moment");
 
-const getAllNotifications = async (req, res, next) => {
-  try {
-    const currentDate = new Date();
-    const notifications = await Notification.find({});
-    const filteredNotifications = notifications.filter((notification) => {
-      const scheduledDate = moment(
-        `${notification.date} ${notification.time}`,
-        "YY-MM-DD HH:mm"
-      ).toDate();
-      return scheduledDate < currentDate;
+// const getAllNotifications = async (req, res, next) => {
+//   try {
+//     const currentDate = new Date();
+//     const notification = await Notification.find({});
+//     const filteredNotifications = notification.filter((notification) => {
+//       const scheduledDate = moment(
+//         `${notification.date} ${notification.time}`,
+//         "YY-MM-DD HH:mm"
+//       ).toDate();
+//       return scheduledDate < currentDate;
+//     });
+//     // console.log(filteredNotifications);
+//     res.status(200).json({
+//       success:true,
+//       message: "All notifications retrieved successfully",
+//       notification: filteredNotifications,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error retrieving notifications", error });
+//   }
+// };
+const getAllNotifications = (req, res, next) => {
+  Notification.find()
+    .then((data) => {
+      res.status(200).json({
+        success: true,
+        message: "All notification retrieved successfully",
+        data: data,
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "Error retrieving feedbacks", error });
     });
-    // console.log(filteredNotifications);
-    res.status(200).json({
-      message: "All notifications retrieved successfully",
-      notifications: filteredNotifications,
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Error retrieving notifications", error });
-  }
 };
-
 const createNotification = async (req, res, next) => {
   try {
     const currentDate = new Date();
@@ -31,13 +44,12 @@ const createNotification = async (req, res, next) => {
     let time = req.body.time || currentDate.toTimeString().slice(0, 8);
 
     const newNotification = new Notification({
-      title: req.body.title,
-      description: req.body.description,
+      ...req.body,
       date,
       time,
       owner: req.body.owner,
-      image: req.file.filename,
-      owner: req.user.id,
+      image: req.file ? "/notification_images/" + req.file.filename : "",
+            owner: req.user.id,
       isRead: false,
     });
 

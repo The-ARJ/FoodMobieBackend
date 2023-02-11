@@ -13,16 +13,18 @@ const upload = require("../middleware/upload");
 const router = express.Router();
 router
   .route("/")
-  .get(verifyUser, verifyManager, userController.getAllUsers)
+  .get(verifyUser, userController.getAllUsers)
   .put((req, res) => res.status(501).json({ msg: "Not implemented" }))
-  .delete(verifyAdmin, userController.deleteAllUsers);
+  .delete( userController.deleteAllUsers);
 
-// router
-//   .route("/:user_id")
-//   .get(userController.getUserById)
-//   .post((req, res) => res.status(501).json({ msg: "Not implemented" }))
-//   .put(userController.updateUserById)
-//   .delete(verifyAdmin, userController.deleteUserById);
+router
+  .route("/:user_id")
+  .get(userController.getUserById)
+  .post((req, res) => res.status(501).json({ msg: "Not implemented" }))
+  .put(verifyUser,upload.single("userImage"), userController.updateUserById)
+  .delete(userController.deleteUserById);
+
+router.route("/current/user").get(verifyUser, userController.getCurrentUser);
 
 router.post("/", upload.single("userImage"), (req, res, next) => {
   User.findOne({ email: req.body.email })
@@ -35,8 +37,10 @@ router.post("/", upload.single("userImage"), (req, res, next) => {
         if (err) return next(err);
 
         const newUser = new User({
-
           email: req.body.email,
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          image: "/user_images/" + req.file.filename,
           password: hash,
           role: req.body.role || "user",
         });
@@ -47,7 +51,10 @@ router.post("/", upload.single("userImage"), (req, res, next) => {
             const data = {
               id: user._id,
               email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName,
               role: user.role,
+              image: user.image,
             };
             return res
               .status(201)
@@ -66,7 +73,7 @@ router.post("/", upload.single("userImage"), (req, res, next) => {
     });
 });
 
-router.post("/login", (req, res, next) => {
+router.post("/login/user", (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {

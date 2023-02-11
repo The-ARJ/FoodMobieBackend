@@ -11,16 +11,16 @@ const {
 
 router
   .route("/")
-  .get(verifyUser,verifyManager,foodController.getAllFoods)
-  .post(verifyManager, upload.single("foodImage"), foodController.createFood)
+  .get(verifyUser,foodController.getAllFoods)
+  .post(verifyAdmin, upload.single("foodImage"), foodController.createFood)
   .put((req, res) => res.status(501).json({ 'msg': "Not implemented" }))
-  .delete(verifyAdmin, foodController.deleteAllFoods);
+  .delete(verifyAdmin,verifyManager, foodController.deleteAllFoods);
 
 router
   .route("/:food_id")
   .get(foodController.getFoodById)
   .post((req, res) => res.status(501).json({ msg: "Not implemented" }))
-  .put(foodController.updateFoodById)
+  .put(verifyUser,upload.single("foodImage"),foodController.updateFoodById)
   .delete(verifyAdmin, foodController.deleteFoodById);
 
 router

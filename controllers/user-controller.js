@@ -1,14 +1,29 @@
 const User = require("../models/User");
 const getAllUsers = (req, res, next) => {
   User.find()
-    .then((users) => {
-      res
-        .status(200)
-        .json({ message: "All users retrieved successfully", users });
+    .then((user) => {
+      res.status(200).json({
+        success: true,
+        message: "All users retrieved successfully",
+        data: user,
+      });
     })
     .catch((error) => {
       res.status(500).json({ message: "Error retrieving users", error });
     });
+};
+const getCurrentUser = (req, res) => {
+  const { id } = req.user;
+  User.findById(id, (err, user) => {
+    if (err) {
+      return res.status(500).json({ message: "Internal server error" });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Current user retrieved successfully",
+      data: user,
+    });
+  });
 };
 
 const deleteAllUsers = (req, res, next) => {
@@ -36,30 +51,84 @@ const getUserById = (req, res, next) => {
       res.status(500).json({ message: "Error retrieving user", error });
     });
 };
-
+ 
 const updateUserById = (req, res, next) => {
+  console.log(req.params);
   User.findById(req.params.user_id)
     .then((user) => {
       if (!user) {
-        res.status(404).json({ message: "User not found" });
-      } else if (user.owner != req.user.id) {
-        res.status(403).json({ message: "Not allowed" });
-      } else {
-        user.username = req.body.username ? req.body.username : user.username;
-        user.image = req.body.image ? req.body.image : user.image;
-        user.firstName = req.body.firstName ? req.body.firstName : user.firstName;
-        user.lastName = req.body.lastName ? req.body.lastName : user.lastName;
-        user.email = req.body.email ? req.body.email : user.email;
-        user.email = req.body.password ? req.body.password : user.password;
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      if (req.body.email && user.email !== req.body.email) {
+        User.findOne({ email: req.body.email }).then((existingUser) => {
+          if (existingUser) {
+            return res
+              .status(400)
+              .json({ error: "A user with that email already exists" });
+          }
+        });
+      }
+
+      user.email = req.body.email || user.email;
+      user.firstName = req.body.firstName || user.firstName;
+      user.lastName = req.body.lastName || user.lastName;
+      if (req.file) {
+        user.image = "/user_images/" + req.file.filename;
+      }
+
+      user
+        .save()
+        .then((updatedUser) => {
+          const data = {
+            id: updatedUser._id,
+            email: updatedUser.email,
+            firstName: updatedUser.firstName,
+            lastName: updatedUser.lastName,
+            role: updatedUser.role,
+            image: updatedUser.image,
+          };
+          return res.json({
+            success: true,
+            message: "User updated successfully",
+            data,
+          });
+        })
+        .catch((err) => {
+          return res.status(400).json({ error: "Error updating user" });
+        });
+    })
+    .catch((err) => {
+      return res.status(500).json({ error: "Server Error" });
+    });
+};
+const updatePassword = (req, res, next) => {
+  User.findById(req.params.user_id)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      bcrypt.hash(req.body.password, 10, (err, hash) => {
+        if (err) return next(err);
+        user.password = hash;
+
         user
           .save()
-          .then((user) =>
-            res.json({ message: "User updated successfully", user })
-          )
-          .catch(next);
-      }
+          .then((updatedUser) => {
+            return res.json({
+              success: true,
+              message: "Password updated successfully",
+            });
+          })
+          .catch((err) => {
+            return res.status(400).json({ error: "Error updating password" });
+          });
+      });
     })
-    .catch(next);
+    .catch((err) => {
+      return res.status(500).json({ error: "Server Error" });
+    });
 };
 
 const deleteUserById = (req, res, next) => {
@@ -82,4 +151,6 @@ module.exports = {
   getUserById,
   updateUserById,
   deleteUserById,
+  getCurrentUser,
+  updatePassword,
 };
