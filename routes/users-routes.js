@@ -40,7 +40,7 @@ router.post("/", upload.single("userImage"), (req, res, next) => {
           email: req.body.email,
           firstName: req.body.firstName,
           lastName: req.body.lastName,
-          image: "/user_images/" + req.file.filename,
+          // image: "/user_images/" + req.file.filename,
           password: hash,
           role: req.body.role || "user",
         });

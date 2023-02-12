@@ -41,12 +41,12 @@ let recommendeddinnerFood = {
 async function updateRecommendations() {
   try {
     const foodData = await Food.find({});
-    recommendedFood.lunch = recommendFood("lunch", foodData);
+    recommendedFood.lunch = recommendFood("Lunch", foodData);
     recommendedbreakfastFood.breakfast = recommendbreakfastFood(
-      "breakfast",
+      "Breakfast",
       foodData
     );
-    recommendeddinnerFood.dinner = recommenddinnerFood("dinner", foodData);
+    recommendeddinnerFood.dinner = recommenddinnerFood("Dinner", foodData);
   } catch (error) {
     console.log(error.message);
   }

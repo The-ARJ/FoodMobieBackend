@@ -6,17 +6,19 @@ const reminderSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  name: {
+  foodname: {
     type: String,
     required: true,
   },
   calories: {
-    type: Number,
-    required: true,
+    type: String,
+  },
+  cookingtime: {
+    type: String,
   },
   meal: {
     type: String,
-    enum: ["breakfast", "lunch", "dinner", "snack"],
+    enum: ["Breakfast", "Lunch", "Dinner", "Snack"],
     required: true,
   },
   date: {
@@ -25,19 +27,19 @@ const reminderSchema = new mongoose.Schema({
   },
   time: {
     type: String,
-    required: true,
   },
   recipe: {
     type: String,
   },
+  ingredients: {
+    type: String,
+  },
   message: {
     type: String,
-    required: true,
   },
   repeat: {
     type: String,
     enum: ["daily", "weekly", "monthly"],
-    required: true,
   },
   createdAt: {
     type: Date,
