@@ -4,7 +4,7 @@ const { scheduleReminder } = require("../utils/reminder-notification");
 
 const getAllReminders = async (req, res, next) => {
   try {
-    const data = await Reminder.find({ userId: req.user.id });
+    const data = await Reminder.find({ owner: req.user.id });
     res
       .status(200)
       .json({ message: "All reminders retrieved successfully", data });
