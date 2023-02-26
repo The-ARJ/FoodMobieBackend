@@ -1,4 +1,6 @@
 const Food = require("../models/Food");
+const csvtojson = require('csvtojson');
+
 const getAllFoods = (req, res, next) => {
   Food.find()
     .then((foods) => {
@@ -14,15 +16,10 @@ const getAllFoods = (req, res, next) => {
 };
 
 const createFood = (req, res, next) => {
-  // console.log(req.body);
-  // console.log(req.user);
   let food = {
     ...req.body,
-    // name: req.body.name,
     image: "/food_images/" + req.file.filename,
-    // meal: req.body.meal,
-    // recipe: req.body.recipe,
-    // calories: req.body.calories,
+
     owner: req.user.id,
   };
   Food.create(food)
@@ -38,6 +35,40 @@ const createFood = (req, res, next) => {
         error: error.message,
       });
     });
+};
+// POST /foods/bulk
+// Upload bulk food data from a CSV file
+const uploadBulkFoods = async (req, res, next) => {
+  try {
+    const file = req.file;
+    if (!file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+    const foods = await csvtojson().fromFile(file.path);
+    if (!foods || foods.length === 0) {
+      return res.status(400).json({ message: "CSV file is empty" });
+    }
+    const userId = req.user.id;
+    const foodsToCreate = foods.map((food) => {
+      return {
+        ...food,
+        image: "/food_images/" + food.image,
+        owner: userId,
+      };
+    });
+    const createdFoods = await Food.insertMany(foodsToCreate);
+    return res.status(201).json({
+      message: "Bulk food data uploaded successfully",
+      foods: createdFoods,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({
+        message: "Error uploading bulk food data",
+        error: error.message,
+      });
+  }
 };
 
 const deleteAllFoods = (req, res, next) => {
@@ -71,6 +102,7 @@ const getFoodById = (req, res, next) => {
 };
 
 const updateFoodById = (req, res, next) => {
+
   Food.findById(req.params.food_id)
     .then((food) => {
       if (!food) {
@@ -105,7 +137,6 @@ const updateFoodById = (req, res, next) => {
             message: "Food updated successfully",
             data,
           });
-  
         })
         .catch((err) => {
           return res.status(400).json({ error: "Error updating food" });
@@ -137,4 +168,5 @@ module.exports = {
   getFoodById,
   updateFoodById,
   deleteFoodById,
+  uploadBulkFoods
 };

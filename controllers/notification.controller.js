@@ -104,29 +104,52 @@ const updateNotificationById = async (req, res, next) => {
     if (!notification) {
       return res.status(404).json({ message: "Notification not found" });
     }
-    notification.title = req.body.title;
-    notification.description = req.body.description;
-    notification.image = req.file.filename || notification.image;
-    notification.date = req.body.date;
-    notification.time = req.body.time;
-    let userRead = notification.reads.find((read) => read.user == req.user.id);
-    if (userRead) {
-      userRead.isRead = req.body.isRead;
-    } else {
-      notification.reads.push({
-        user: req.user.id,
-        isRead: req.body.isRead,
-      });
+    
+    if (!req.body.title && !req.body.description && !req.file && !req.body.date && !req.body.time && !req.body.isRead) {
+      return res.status(400).json({ message: "No fields to update" });
     }
+    
+    if (req.body.title) {
+      notification.title = req.body.title;
+    }
+    
+    if (req.body.description) {
+      notification.description = req.body.description;
+    }
+    
+    if (req.file) {
+      notification.image = "/notification_images/" + req.file.filename;
+    }
+    
+    if (req.body.date) {
+      notification.date = req.body.date;
+    }
+    
+    if (req.body.time) {
+      notification.time = req.body.time;
+    }
+    
+    if (req.body.isRead !== undefined) {
+      let userRead = notification.reads.find((read) => read.user == req.user.id);
+      if (userRead) {
+        userRead.isRead = req.body.isRead;
+      } else {
+        notification.reads.push({
+          user: req.user.id,
+          isRead: req.body.isRead,
+        });
+      }
+    }
+    
     await notification.save();
-    res
-      .status(200)
-      .json({ message: "Notification updated successfully", notification });
+    
+    res.status(200).json({ message: "Notification updated successfully", notification });
   } catch (error) {
     res.status(500).json({ message: "Error updating notification", error });
     console.log(error);
   }
 };
+
 
 const deleteNotificationById = async (req, res, next) => {
   try {

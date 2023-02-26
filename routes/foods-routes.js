@@ -3,6 +3,7 @@ const router = express.Router();
 const foodController = require("../controllers/food-controller");
 const reviewController = require("../controllers/review-controller");
 const upload = require("../middleware/upload");
+const bulk = require("../middleware/bulk");
 const {
   verifyUser,
   verifyManager,
@@ -11,16 +12,24 @@ const {
 
 router
   .route("/")
-  .get(verifyUser,foodController.getAllFoods)
+  .get(verifyUser, foodController.getAllFoods)
   .post(verifyAdmin, upload.single("foodImage"), foodController.createFood)
-  .put((req, res) => res.status(501).json({ 'msg': "Not implemented" }))
-  .delete(verifyAdmin,verifyManager, foodController.deleteAllFoods);
+  .put((req, res) => res.status(501).json({ msg: "Not implemented" }))
+  .delete(verifyAdmin, verifyManager, foodController.deleteAllFoods);
+
+router
+  .route("/bulk")
+  .post(
+    verifyAdmin,
+    bulk.single("foodImage"),
+    foodController.uploadBulkFoods
+  );
 
 router
   .route("/:food_id")
   .get(foodController.getFoodById)
   .post((req, res) => res.status(501).json({ msg: "Not implemented" }))
-  .put(verifyUser,upload.single("foodImage"),foodController.updateFoodById)
+  .put(verifyUser, upload.single("foodImage"), foodController.updateFoodById)
   .delete(verifyAdmin, foodController.deleteFoodById);
 
 router

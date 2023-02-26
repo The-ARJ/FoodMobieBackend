@@ -61,47 +61,58 @@ const updateUserById = (req, res, next) => {
       }
 
       if (req.body.email && user.email !== req.body.email) {
-        User.findOne({ email: req.body.email }).then((existingUser) => {
-          if (existingUser) {
-            return res
-              .status(400)
-              .json({ error: "A user with that email already exists" });
-          }
-        });
-      }
-
-      user.email = req.body.email || user.email;
-      user.firstName = req.body.firstName || user.firstName;
-      user.lastName = req.body.lastName || user.lastName;
-      if (req.file) {
-        user.image = "/user_images/" + req.file.filename;
-      }
-
-      user
-        .save()
-        .then((updatedUser) => {
-          const data = {
-            id: updatedUser._id,
-            email: updatedUser.email,
-            firstName: updatedUser.firstName,
-            lastName: updatedUser.lastName,
-            role: updatedUser.role,
-            image: updatedUser.image,
-          };
-          return res.json({
-            success: true,
-            message: "User updated successfully",
-            data,
+        User.findOne({ email: req.body.email })
+          .then((existingUser) => {
+            if (existingUser) {
+              return res
+                .status(400)
+                .json({ error: "A user with that email already exists" });
+            } else {
+              updateUser(user, req, res);
+            }
+          })
+          .catch((err) => {
+            return res.status(400).json({ error: "Error updating user" });
           });
-        })
-        .catch((err) => {
-          return res.status(400).json({ error: "Error updating user" });
-        });
+      } else {
+        updateUser(user, req, res);
+      }
     })
     .catch((err) => {
       return res.status(500).json({ error: "Server Error" });
     });
 };
+
+function updateUser(user, req, res) {
+  user.email = req.body.email || user.email;
+  user.firstName = req.body.firstName || user.firstName;
+  user.lastName = req.body.lastName || user.lastName;
+  if (req.file) {
+    user.image = "/user_images/" + req.file.filename;
+  }
+
+  user
+    .save()
+    .then((updatedUser) => {
+      const data = {
+        _id: updatedUser._id,
+        email: updatedUser.email,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        role: updatedUser.role,
+        image: updatedUser.image,
+      };
+      return res.json({
+        success: true,
+        message: "User updated successfully",
+        data,
+      });
+    })
+    .catch((err) => {
+      return res.status(400).json({ error: "Error updating user" });
+    });
+}
+
 const updatePassword = (req, res, next) => {
   User.findById(req.params.user_id)
     .then((user) => {

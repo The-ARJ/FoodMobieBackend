@@ -21,7 +21,7 @@ router
 router
   .route("/:notification_id")
   .get(verifyUser,notificationsController.getNotificationById)
-  .put(verifyManager,verifyUser,upload.single("notifyImage"),notificationsController.updateNotificationById)
+  .put(verifyManager,upload.single("notifyImage"),notificationsController.updateNotificationById)
   .delete(verifyManager,notificationsController.deleteNotificationById);
 
 router.get("/get/allunread", verifyUser, notificationsController.getAllUnread);
