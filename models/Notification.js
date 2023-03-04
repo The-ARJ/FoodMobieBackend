@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const notificationSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -35,6 +34,7 @@ const notificationSchema = new mongoose.Schema({
       user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+        required: true,
       },
       isRead: {
         type: Boolean,
@@ -47,6 +47,5 @@ const notificationSchema = new mongoose.Schema({
     default: false,
   },
 });
-// const Notification = mongoose.model("PushNotification", notificationSchema);
 
 module.exports = mongoose.model("Notification", notificationSchema);

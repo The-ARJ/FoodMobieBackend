@@ -1,28 +1,51 @@
-const Notification = require("../models/alert");
+const Notification = require("../models/Notification");
 const { scheduleNotification } = require("../utils/notification-alert");
 const moment = require("moment");
 
-// const getAllNotifications = async (req, res, next) => {
-//   try {
-//     const currentDate = new Date();
-//     const notification = await Notification.find({});
-//     const filteredNotifications = notification.filter((notification) => {
-//       const scheduledDate = moment(
-//         `${notification.date} ${notification.time}`,
-//         "YY-MM-DD HH:mm"
-//       ).toDate();
-//       return scheduledDate < currentDate;
-//     });
-//     // console.log(filteredNotifications);
-//     res.status(200).json({
-//       success:true,
-//       message: "All notifications retrieved successfully",
-//       notification: filteredNotifications,
-//     });
-//   } catch (error) {
-//     res.status(500).json({ message: "Error retrieving notifications", error });
-//   }
-// };
+const getPastNotifications = async (req, res, next) => {
+  try {
+    const currentDate = new Date();
+    const notification = await Notification.find({});
+    const filteredNotifications = notification.filter((notification) => {
+      const scheduledDate = moment(
+        `${notification.date} ${notification.time}`,
+        "YYYY/MM/DD HH:mm"
+      ).toDate();
+      return scheduledDate < currentDate;
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "All notifications retrieved successfully",
+      notification: filteredNotifications,
+    });
+  } catch (error) {
+    console.error("Error retrieving notifications", error);
+    res.status(500).json({ message: "Error retrieving notifications" });
+  }
+};
+const getScheduledNotifications = async (req, res, next) => {
+  try {
+    const currentDate = new Date();
+    const notification = await Notification.find({});
+    const filteredNotifications = notification.filter((notification) => {
+      const scheduledDate = moment(
+        `${notification.date} ${notification.time}`,
+        "YYYY/MM/DD HH:mm"
+      ).toDate();
+      return scheduledDate > currentDate;
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "All notifications retrieved successfully",
+      notification: filteredNotifications,
+    });
+  } catch (error) {
+    console.error("Error retrieving notifications", error);
+    res.status(500).json({ message: "Error retrieving notifications" });
+  }
+};
 const getAllNotifications = (req, res, next) => {
   Notification.find()
     .then((data) => {
@@ -38,18 +61,11 @@ const getAllNotifications = (req, res, next) => {
 };
 const createNotification = async (req, res, next) => {
   try {
-    const currentDate = new Date();
-    const date = req.body.date || currentDate.toISOString().slice(0, 10);
-    currentDate.setSeconds(currentDate.getSeconds() + 1);
-    let time = req.body.time || currentDate.toTimeString().slice(0, 8);
-
     const newNotification = new Notification({
       ...req.body,
-      date,
-      time,
       owner: req.body.owner,
       image: req.file ? "/notification_images/" + req.file.filename : "",
-            owner: req.user.id,
+      owner: req.user.id,
       isRead: false,
     });
 
@@ -104,33 +120,42 @@ const updateNotificationById = async (req, res, next) => {
     if (!notification) {
       return res.status(404).json({ message: "Notification not found" });
     }
-    
-    if (!req.body.title && !req.body.description && !req.file && !req.body.date && !req.body.time && !req.body.isRead) {
+
+    if (
+      !req.body.title &&
+      !req.body.description &&
+      !req.file &&
+      !req.body.date &&
+      !req.body.time &&
+      !req.body.isRead
+    ) {
       return res.status(400).json({ message: "No fields to update" });
     }
-    
+
     if (req.body.title) {
       notification.title = req.body.title;
     }
-    
+
     if (req.body.description) {
       notification.description = req.body.description;
     }
-    
+
     if (req.file) {
       notification.image = "/notification_images/" + req.file.filename;
     }
-    
+
     if (req.body.date) {
       notification.date = req.body.date;
     }
-    
+
     if (req.body.time) {
       notification.time = req.body.time;
     }
-    
+
     if (req.body.isRead !== undefined) {
-      let userRead = notification.reads.find((read) => read.user == req.user.id);
+      let userRead = notification.reads.find(
+        (read) => read.user == req.user.id
+      );
       if (userRead) {
         userRead.isRead = req.body.isRead;
       } else {
@@ -140,15 +165,41 @@ const updateNotificationById = async (req, res, next) => {
         });
       }
     }
-    
+
     await notification.save();
-    
-    res.status(200).json({ message: "Notification updated successfully", notification });
+
+    res
+      .status(200)
+      .json({ message: "Notification updated successfully", notification });
   } catch (error) {
     res.status(500).json({ message: "Error updating notification", error });
     console.log(error);
   }
 };
+
+const readNotificationById = async (req, res, next) => {
+  try {
+    const notification = await Notification.findById(req.params.id);
+    if (!notification) {
+      return res.status(404).json({ error: "Notification not found" });
+    }
+    const userId = req.user.id; // get the ID of the logged-in user
+    const read = notification.reads.find((r) => r.user.toString() === userId);
+    if (!read) {
+      // user has not marked the notification as read yet
+      notification.reads.push({ user: userId, isRead: true });
+    } else {
+      // user has already marked the notification as read
+      read.isRead = true;
+    }
+    await notification.save();
+    res.json(notification);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
 
 
 const deleteNotificationById = async (req, res, next) => {
@@ -240,4 +291,7 @@ module.exports = {
   markAsRead,
   getAllUnread,
   markAllAsRead,
+  getPastNotifications,
+  getScheduledNotifications,
+  readNotificationById,
 };
