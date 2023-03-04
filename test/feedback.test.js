@@ -47,6 +47,14 @@ test("Delete Feedback by ID", async () => {
       .set("Authorization", `Bearer ${token}`)
       .expect(200);
   });
+
+
+  test("Delete All Feedback", async () => {
+    const res = await api
+      .delete(`/feedbacks`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(200);
+  });
 afterAll(async () => {
   await mongoose.connection.close();
 });

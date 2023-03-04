@@ -41,6 +41,21 @@ test("Get Notificaiton by ID", async () => {
     .set("Authorization", `Bearer ${token}`)
     .expect(200);
 });
+
+test("Delete Notification by ID", async () => {
+    const res = await api
+      .delete(`/notifications/${notId}`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(200);
+  });
+
+
+  test("Delete All Notification", async () => {
+    const res = await api
+      .delete(`/notifications`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(200);
+  });
 afterAll(async () => {
   await mongoose.connection.close();
 });
