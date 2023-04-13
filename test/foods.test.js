@@ -14,7 +14,7 @@ const food = {
 };
 
 let token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MDM0NmM4NzQ1YzliMGZkNWNlNGNlMCIsImVtYWlsIjoibmV3Iiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjc3OTM2MzQwLCJleHAiOjE2NzgwMjI3NDB9.wSCS40ZpeCjXq1ECchTfF-0uqodSv3sDS1Xfk2GKIuA";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MDZlNjQwNTI5ZjI4MTVhMGQ5ODRjOSIsImVtYWlsIjoidXNlckAxMjM0Z21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjc4MTczNzY4LCJleHAiOjE2NzgyNjAxNjh9.PPklFkN8ok4WShitmGbIRTg4QxbtCZEYWzixlageH-Y";
 
 beforeAll(async () => {
   //   await Foods.deleteMany({});
