@@ -17,7 +17,7 @@ const scheduleNotification = async () => {
       .sort({
         createdAt: -1,
       })
-      .populate("owner", "username");
+      .populate("owner", "email");
     if (notification) {
       let scheduleDate = new Date(notification.date + " " + notification.time);
       schedule.scheduleJob(scheduleDate, () => {
@@ -49,7 +49,7 @@ const scheduleNotification = async () => {
               <body>
                 <h1>FoodMobie Notification</h1>
                 <p>
-                  <strong>Hello ${notification.owner.username},</strong>
+                  <strong>Hello ${notification.owner.firstName},</strong>
                 </p>
                 <p>
                 You Have a New Message From FoodMobie
@@ -68,8 +68,8 @@ const scheduleNotification = async () => {
         });
 
         console.log(
-          "Sending notification for notification:",
-          notification.owner.username,
+          "Sending notification:",
+          notification.owner.firstName,
           notification
         );
         notification.isNotified = true;
