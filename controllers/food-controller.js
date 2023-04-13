@@ -18,10 +18,13 @@ const getAllFoods = (req, res, next) => {
 const createFood = (req, res, next) => {
   let food = {
     ...req.body,
-    image: "/food_images/" + req.file.filename,
-
     owner: req.user.id,
   };
+  
+  if (req.file) {
+    food.image = "/food_images/" + req.file.filename;
+  }
+
   Food.create(food)
     .then((food) => {
       res.status(201).json({
@@ -36,6 +39,7 @@ const createFood = (req, res, next) => {
       });
     });
 };
+
 // POST /foods/bulk
 // Upload bulk food data from a CSV file
 const uploadBulkFoods = async (req, res, next) => {
